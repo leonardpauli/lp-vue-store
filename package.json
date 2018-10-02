@@ -1,0 +1,70 @@
+{
+  "name": "@leonardpauli/lp-vue-store",
+  "version": "0.1.0",
+  "description": "Simple global store using vue observables",
+  "main": "main.js",
+  "scripts": {
+    "example": "npm i && npm run build && (cd example && npm i && npm run serve)",
+    "lint": "eslint --ignore-pattern '**/node_modules/' --fix '{example,src,__tests__}/**/*.js'",
+    "lint:watch": "onchange '{example,src,__tests__}/**/*.js' -d 200 -w -- npm run --silent lint {{changed}}",
+    "build:watch": "npm run build -- --watch",
+    "build": "f () { ([ -d lib ] && rm -rf lib); babel src -d lib --copy-files --include-dotfiles --ignore '**/*.test.js' --source-maps ${1:---retain-lines --minified}; }; f",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeonardPauli/lp-vue-store.git"
+  },
+  "keywords": [
+    "global",
+    "store",
+    "vue",
+    "js",
+    "data"
+  ],
+  "author": "Leonard Pauli",
+  "private": false,
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeonardPauli/lp-vue-store/issues"
+  },
+  "homepage": "https://github.com/LeonardPauli/lp-vue-store#readme",
+  "files": [
+    "lib/",
+    "index.js"
+  ],
+  "peerDependencies": {
+    "vue": "^2.5.16"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.52",
+    "@babel/core": "^7.0.0-beta.52",
+    "@babel/preset-env": "^7.0.0-beta.52",
+    "@babel/preset-stage-2": "^7.0.0-beta.52",
+    "babel-preset-minify": "^0.3.0",
+    "@leonardpauli/babel-preset": "^0.1.0",
+    "@leonardpauli/eslint-config": "^0.1.3",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
+    "eslint": "^4.19.1",
+    "eslint-plugin-jest": "^21.15.2",
+    "eslint-plugin-vue": "^4.4.0",
+    "lint-staged": "^7.0.4",
+    "onchange": "^3.3.0",
+    "yorkie": "^1.0.3"
+  },
+  "lint-staged": {
+    "{src,examples}/**/*.js": [
+      "npm run lint --"
+    ]
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

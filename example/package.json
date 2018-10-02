@@ -1,0 +1,31 @@
+{
+  "name": "@leonardpauli/lp-vue-store-example",
+  "version": "0.1.0",
+  "description": "example",
+  "main": "main.js",
+  "scripts": {
+    "serve": "vue-cli-service serve --open main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeonardPauli/lp-vue-store.git"
+  },
+  "author": "Leonard Pauli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeonardPauli/lp-vue-lib/issues"
+  },
+  "homepage": "https://github.com/LeonardPauli/lp-vue-lib#readme",
+  "dependencies": {
+    "@leonardpauli/lp-vue-store": "file:..",
+    "vue": "^2.5.16"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^3.0.0-beta.9",
+    "vue-template-compiler": "^2.5.13",
+    "pug": "^2.0.0",
+    "pug-loader": "^2.4.0",
+    "pug-plain-loader": "^1.0.0"
+  }
+}
