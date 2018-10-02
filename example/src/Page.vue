@@ -1,6 +1,7 @@
 <template lang="pug">
 .root
-	FormCard(v-for="(item, index) in $store.Form.list", :item="item", :key="index")
+	div(v-if="!$store.Form.list.length") No items
+	FormCard(v-for="item in $store.Form.list", :item="item", :key="item.id")
 	form(style="{background: 'hsla(140,50%,50%,0.1)'}", @submit="submit")
 		input(v-model="draft.title", placeholder="title")
 		input(v-model="draft.value", placeholder="value")

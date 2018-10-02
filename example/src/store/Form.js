@@ -10,6 +10,8 @@ const Form = Store.createModel({
 	short: c(({title, value})=> `${title}: ${value}`),
 	double: a(s=> s.value*=2),
 	add: a(s=> increment=> s.value += increment),
+	remove: a(s=> Form.remove(s)),
+	id: c(s=> s.title+s.value),
 }, {
 	// static
 	list: [],
@@ -24,6 +26,12 @@ const Form = Store.createModel({
 
 		return res()
 	}, 500))),
+	remove: a(s=> x=> {
+		const idx = s.list.indexOf(x)
+		if (idx==-1) return false
+		s.list.splice(idx, 1)
+		return true
+	}),
 })
 
 export default Form
