@@ -4,7 +4,7 @@
   "description": "example",
   "main": "main.js",
   "scripts": {
-    "serve": "vue-cli-service serve --open main.js",
+    "serve": "vue-cli-service serve --open",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/LeonardPauli/lp-vue-lib#readme",
   "dependencies": {
-    "@leonardpauli/lp-vue-store": "file:..",
+    "@leonardpauli/lp-vue-store": "^0.1.0",
     "vue": "^2.5.16"
   },
   "devDependencies": {
