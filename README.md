@@ -5,6 +5,27 @@ __Usage:__
 - `npm i @leonardpauli/lp-vue-store`
 - `import Store from '@leonardpauli/lp-vue-store'`
 - *(see `./example` for examples)*
+
+__Try example:__
+- `git clone git@github.com:leonardpauli/lp-vue-store.git`
+- `cd lp-vue-store`
+- `npm run example`
+- demo should now open in browser, see source for usage
+
+__Demo includes:__
+- error handling
+- loading state
+- empty state
+- lists
+- modules/sub-modules
+- actions (inc. async)
+- computed
+- module static data
+- module props validation
+- $store globally reachable (key changeable)
+- works great with Vue, no fuzz, just nicely works
+
+*much thanks to vue's existing logic*
  
 
 ### Contribute

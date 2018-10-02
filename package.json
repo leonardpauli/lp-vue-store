@@ -1,10 +1,10 @@
 {
   "name": "@leonardpauli/lp-vue-store",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple global store using vue observables",
   "main": "main.js",
   "scripts": {
-    "example": "npm i && npm run build && (cd example && npm i && npm run serve)",
+    "example": "npm i && npm run build && npm link && (cd example && npm i && npm link @leonardpauli/lp-vue-store && npm run serve)",
     "lint": "eslint --ignore-pattern '**/node_modules/' --fix '{example,src,__tests__}/**/*.js'",
     "lint:watch": "onchange '{example,src,__tests__}/**/*.js' -d 200 -w -- npm run --silent lint {{changed}}",
     "build:watch": "npm run build -- --watch",
