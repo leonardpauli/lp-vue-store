@@ -18,9 +18,18 @@ const Store = {
 		const staticStore = staticStoreRaw instanceof Vue
 			? staticStoreRaw: Store.create(staticStoreRaw)
 		VueModel.$static = staticStore
-		Object.keys(staticStore).map(k=> k[0]=='$' || k[0]=='_' || VueModel[k]!==void 0 || !staticStore.hasOwnProperty(k)
-			? null
-			: VueModel[k] = staticStore[k])
+		Object.keys(staticStore).forEach(k=> {
+			const isOwn = k[0]!='$' && k[0]!='_' && staticStore.hasOwnProperty(k)
+			if (!isOwn || VueModel[k]!==void 0) return
+			if (!(staticStore[k] instanceof Function)) {
+				Object.defineProperty(VueModel, k, {
+					get: ()=> staticStore[k],
+					set: v=> staticStore[k] = v,
+				})
+				return
+			}
+			VueModel[k] = staticStore[k]
+		})
 
 		return VueModel
 	},
