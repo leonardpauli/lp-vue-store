@@ -1,10 +1,15 @@
-// import {Store} from '@leonardpauli/lp-vue-lib'
 import Store from '@leonardpauli/lp-vue-store'
 import Form from './Form'
 
-const store = Store.create({
+const defaultData = {
 	message: 'hello',
+}
+
+const store = Store.create({
+	$name: 'store',
+	message: String,
+}, {
 	Form,
-})
+}, defaultData)
 
 export default store

@@ -8,34 +8,42 @@
 import Vue from 'vue'
 
 const Store = {
-	create: store=> new Vue(preparedStoreObj(store)),
-	createModel: (store, staticStoreRaw)=> {
+	create: (instanceRaw, staticRaw = {}, data = null)=> {
+		const hasData = data!==null
+		const name = instanceRaw.$name || 'VueModel'
 
-		const data = preparedStoreObj(store, {asModel: true})
-		const VueModel = Vue.extend(data)
-		VueModel.$with = propsData=> new VueModel({propsData})
+		const instanceExists = instanceRaw instanceof Vue
+		const instanceOpt = instanceExists? null: preparedStoreObj(instanceRaw, {asModel: true})
+		const VueModel = instanceExists? instanceRaw: Vue.extend(instanceOpt)
 
-		const staticStore = staticStoreRaw instanceof Vue
-			? staticStoreRaw: Store.create(staticStoreRaw)
-		VueModel.$static = staticStore
-		Object.keys(staticStore).forEach(k=> {
-			const isOwn = k[0]!='$' && k[0]!='_' && staticStore.hasOwnProperty(k)
-			if (!isOwn || VueModel[k]!==void 0) return
-			if (!(staticStore[k] instanceof Function)) {
-				Object.defineProperty(VueModel, k, {
-					get: ()=> staticStore[k],
-					set: v=> staticStore[k] = v,
-				})
-				return
-			}
-			VueModel[k] = staticStore[k]
+		const staticExists = staticRaw instanceof Vue
+		const staticOpt = staticExists? null: preparedStoreObj(staticRaw)
+		const staticOnInstance = hasData && !staticExists
+		const staticStore = staticOnInstance? null: staticExists? staticRaw: new Vue(staticOpt)
+
+		VueModel.$with = propsData=> new VueModel({
+			...staticOnInstance? staticOpt: {}, propsData,
 		})
 
-		return VueModel
+		if (!staticOnInstance) {
+			assignStaticFieldsToModel({staticStore, VueModel})
+			VueModel.$static = staticStore
+			VueModel.$static.$model = VueModel
+			VueModel.$static.toString = ()=> name+'.Static'
+		}
+
+		VueModel.$model = VueModel
+		VueModel.prototype.$model = VueModel
+		VueModel.toString = ()=> name
+		VueModel.prototype.toString = function toString () {
+			return ((this.$options && this.$options.name) || 'VueModel') + '()'
+		}
+
+		return hasData? VueModel.$with(data): VueModel
 	},
 	install: (Vue, options = {})=> {
 		const {store, key = '$store'} = options
-		const mstore = store instanceof Vue? store: Store.create(store)
+		const mstore = store instanceof Vue? store: Store.create({}, store, {})
 		if (key) Vue.prototype[key] = mstore
 		return mstore
 	},
@@ -50,6 +58,21 @@ export default Store
 
 
 // helpers
+
+const assignStaticFieldsToModel = ({staticStore, VueModel})=> {
+	Object.keys(staticStore).forEach(k=> {
+		const isOwn = k[0]!='$' && k[0]!='_' && staticStore.hasOwnProperty(k)
+		if (!isOwn || VueModel[k]!==void 0) return
+		if (!(staticStore[k] instanceof Function)) {
+			Object.defineProperty(VueModel, k, {
+				get: ()=> staticStore[k],
+				set: v=> staticStore[k] = v,
+			})
+			return
+		}
+		VueModel[k] = staticStore[k]
+	})
+}
 
 const remakeArrowFns = obj=> Object.keys(obj).map(k=> ({
 	[k] (...args) {

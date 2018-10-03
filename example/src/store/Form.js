@@ -2,7 +2,7 @@
 import Store from '@leonardpauli/lp-vue-store'
 const {action: a, computed: c} = Store
 
-const Form = Store.createModel({
+const Form = Store.create({
 	$name: 'Form',
 	value: Number,
 	title: String,
@@ -10,7 +10,7 @@ const Form = Store.createModel({
 	short: c(({title, value})=> `${title}: ${value}`),
 	double: a(s=> s.value*=2),
 	add: a(s=> increment=> s.value += increment),
-	remove: a(s=> Form.remove(s)),
+	remove: a(s=> s.$model.remove(s)),
 	id: c(s=> s.title+s.value),
 }, {
 	// static
@@ -22,7 +22,7 @@ const Form = Store.createModel({
 		const err = isNaN(propsFixed.value)? 'value has to be number': null
 		if (err) return rej(err)
 		
-		s.list.push(Form.$with(propsFixed))
+		s.list.push(s.$model.$with(propsFixed))
 
 		return res()
 	}, 500))),
