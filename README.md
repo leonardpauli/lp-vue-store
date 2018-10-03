@@ -11,6 +11,7 @@ __Try example:__
 - `cd lp-vue-store`
 - `npm run example`
 - demo should now open in browser, see source for usage
+- or view it at: https://lp-vue-store-example.now.sh
 
 __Demo includes:__
 - error handling

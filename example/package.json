@@ -5,6 +5,8 @@
   "main": "main.js",
   "scripts": {
     "serve": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "deploy": "cp now.json dist/ && cd dist && now --public && now alias",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
