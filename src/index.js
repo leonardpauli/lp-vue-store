@@ -47,7 +47,7 @@ const Store = {
 		if (key) Vue.prototype[key] = mstore
 		return mstore
 	},
-	computed: fn=> { fn.markedAsComputed = true; return fn },
+	computed: (fn, setter=null)=> { fn.markedAsComputed = true; fn.setter = setter; return fn },
 	action: fn=> { fn.markedAsAction = true; return fn },
 }
 
@@ -74,12 +74,21 @@ const assignStaticFieldsToModel = ({staticStore, VueModel})=> {
 	})
 }
 
-const remakeArrowFns = obj=> Object.keys(obj).map(k=> ({
+const remakeArrowFnComputed = (k, fn)=> ({
+	[k] () {
+		const val = fn(this)
+		return val
+	},
+})
+const remakeArrowFn = (k, fn)=> ({
 	[k] (...args) {
-		const val = obj[k](this)
+		const val = fn(this)
 		return val instanceof Function? val(...args): val
 	},
-})).reduce((a, v)=> Object.assign(a, v), {})
+})
+const remakeArrowFns = obj=> Object.keys(obj)
+	.map(k=> remakeArrowFn(k, obj[k]))
+	.reduce((a, v)=> Object.assign(a, v), {})
 
 const preparedStoreObj = (store = {}, {asModel = false} = {})=> {
 	const rest = Object.assign({}, store)
@@ -101,7 +110,10 @@ const preparedStoreObj = (store = {}, {asModel = false} = {})=> {
 		}
 		if (!v) return
 		if (v.markedAsComputed) {
-			computed[k] = v
+			computed[k] = {
+				get: remakeArrowFnComputed('fn', v).fn,
+				set: v.setter? remakeArrowFn('fn', v.setter).fn: void 0,
+			}
 			delete rest[k]
 		} else if (v.markedAsAction) {
 			methods[k] = v
@@ -112,7 +124,7 @@ const preparedStoreObj = (store = {}, {asModel = false} = {})=> {
 		name,
 		data: data instanceof Function? data: ()=> data,
 		props: asModel? rest: undefined,
-		computed: remakeArrowFns(computed),
+		computed,
 		methods: remakeArrowFns(methods),
 	}
 }

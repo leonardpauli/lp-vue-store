@@ -1,12 +1,12 @@
 {
   "name": "@leonardpauli/lp-vue-store",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simple global store using vue observables",
   "main": "main.js",
   "scripts": {
     "example": "npm i && npm run build && npm link && (cd example && npm i && npm link @leonardpauli/lp-vue-store && npm run serve)",
-    "lint": "eslint --ignore-pattern '**/node_modules/' --fix '{example,src,__tests__}/**/*.js'",
-    "lint:watch": "onchange '{example,src,__tests__}/**/*.js' -d 200 -w -- npm run --silent lint {{changed}}",
+    "lint": "eslint --ignore-pattern '**/node_modules/' --fix '{example/src,src,__tests__}/**/*.js'",
+    "lint:watch": "onchange '{example/src,src,__tests__}/**/*.js' -d 200 -w -- npm run --silent lint {{changed}}",
     "build:watch": "npm run build -- --watch",
     "build": "f () { ([ -d lib ] && rm -rf lib); babel src -d lib --copy-files --include-dotfiles --ignore '**/*.test.js' --source-maps ${1:---retain-lines --minified}; }; f",
     "test": "echo \"Error: no test specified\" && exit 1"
